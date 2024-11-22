@@ -16,7 +16,7 @@ export default function Home() {
       }
     })
       .then(res => res.json())
-      .then(json => setAnimals( json ) )
+      .then(json => setAnimals(json))
       .catch(err => console.log(err))
   }
 
@@ -30,24 +30,19 @@ export default function Home() {
     }, [])
   );
 
+  const Item = ({title}) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+  );
+
   return (
     <View style={css.container}>
-      {animals.length > 0 ?
-        <>
-          <FlatList
-            data={animals}
-            renderItem={({ item }) => <Animais nome={item.animalNome} image={item.animalFoto} />}
-            keyExtractor={(item) => item.animalId}
-            contentContainerStyle={{ height: (animals.length * 600) + 110 }}
-          />
-        </>
-        :
-        ( animals.length == 0 ? 
-            <Text style={css.text}>Sem animais para exibir</Text>
-          :
-            <ActivityIndicator size="large" color="#3097ff" />
-        )
-      }
+      <FlatList
+        data={animals}
+        renderItem={({ item }) => <Item title={item.title} />}
+        keyExtractor={item => item.id}
+      />
     </View>
   )
 }
