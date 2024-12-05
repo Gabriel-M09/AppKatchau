@@ -2,13 +2,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../Context/AuthContext';
 
 import Home from '../Pages/Home';
 import Login from '../Pages/Login';
-import Cadastro from '../Pages/cadastrar'
-import carrinho from '../Pages/carrinho';
+import Cadastro from '../Pages/Cadastro';
+import Carrinho from '../Pages/Carrinho';
 
 const Tab = createBottomTabNavigator();
 
@@ -16,8 +16,14 @@ export default function Rotas() {
 
     const { logado } = useContext(AuthContext);
 
-    if (!logado) {
-        return (<Login />)
+    const[ cadastro, setCadastro] = useState();
+
+    if(!logado && !cadastro) {
+        return(<Login setCadastro={setCadastro}/>)
+    }
+
+    if(!logado && cadastro) {
+        return(<Cadastro setCadastro={setCadastro}/>)
     }
 
     return (
@@ -42,20 +48,11 @@ export default function Rotas() {
                     }}
                 />
                 <Tab.Screen
-                    name="carrinho"
-                    component={carrinho}
+                    name="Carrinho"
+                    component={Carrinho}
                     options={{
                         tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="camera" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="Cadastro"
-                    component={Cadastro}
-                    options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <MaterialCommunityIcons name="camera" color={color} size={size} />
+                            <MaterialCommunityIcons name="cart" color={color} size={size} />
                         ),
                     }}
                 />
